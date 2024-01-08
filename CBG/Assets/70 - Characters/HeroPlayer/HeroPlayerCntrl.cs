@@ -18,11 +18,16 @@ public class HeroPlayerCntrl : MonoBehaviour
     private Vector2 movement;
     private Vector2 aim;
 
+    private Animator animator;
+
     private Vector3 playerVelocity;
+
+    private Vector3 move;
 
     private void Awake()
     {
         charCntrl = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -40,21 +45,26 @@ public class HeroPlayerCntrl : MonoBehaviour
 
     private void HandleMovement()
     {
-        Vector3 move = new Vector3(movement.x, 0.0f, movement.y);
+        float horizontal = movement.x;
+        float vertical = movement.y;
+
+        move.x = horizontal;
+        move.y = 0.0f;
+        move.z = vertical;
+
         charCntrl.Move(move * playerSpeed * Time.deltaTime);
+
+        animator.SetFloat("Horizontal", horizontal, 0.1f, Time.deltaTime);
+        animator.SetFloat("Vertical", vertical, 0.1f, Time.deltaTime);
     }
 
     private void HandleAim()
     {
-        //aim = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(aim);
-        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
-        float distance;
 
-        if (groundPlane.Raycast(ray, out distance))
+        if (Physics.Raycast(ray, out RaycastHit hit, 100))
         {
-            Vector3 point = ray.GetPoint(distance);
-            Vector3 target = new Vector3(point.x, transform.position.y, point.z);
+            Vector3 target = new Vector3(hit.point.x, transform.position.y, hit.point.z);
             transform.LookAt(target);
         }
     }
@@ -64,16 +74,27 @@ public class HeroPlayerCntrl : MonoBehaviour
         if (context.performed)
         {
             movement = context.ReadValue<Vector2>();
-            Debug.Log($"Mouse Move: {movement}");
         }
     }
 
-    public void OnLook(InputAction.CallbackContext context)
+    public void OnAim(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             aim = context.ReadValue<Vector2>();
-            Debug.Log($"Aiming: {aim}");
+        }
+    }
+
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Debug.Log("Started");
+        }
+
+        if (context.canceled)
+        {
+            Debug.Log("Canceled");
         }
     }
 }
