@@ -11,61 +11,102 @@ public class HeroPlayerCntrl : MonoBehaviour
     [SerializeField] private float controllerDeadZone = 0.1f;
     [SerializeField] private float gamePadRotateSmoothing = 1000.0f;
 
+    [SerializeField] private WeaponsSO weaponSO;
+    private GameObject weapon;
+
     [SerializeField] bool isGamePad;
 
     private CharacterController charCntrl;
 
     private Vector2 movement;
-    private Vector2 aim;
+    private Vector2 aimScreen;
 
     private Animator animator;
 
-    private Vector3 playerVelocity;
+    //private Vector3 playerVelocity;
 
-    private Vector3 move;
+    private Vector3 charCntrlMove;
+
+    private Vector3 aimTarget;
+
+    private Vector3 aimDirection;
+
+    private Vector3 cameraForward;
+    //private Vector3 move;
+    //private Vector3 moveInput;
+    private Transform cam;
+
+    float forwardAmount;
+    float turnAmount;
 
     private void Awake()
     {
         charCntrl = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+
+        aimTarget = Vector3.zero;
+        cam = Camera.main.transform;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        weapon = Instantiate(weaponSO.weapon, new Vector3(0.618f, 1.123f, 1.452f), Quaternion.identity);
     }
 
     // Update is called once per frame
     void Update()
     {
-        HandleMovement();
-        HandleAim();
+        MovePlayer(movement.x, movement.y, Time.deltaTime);
+        //HandleAim(aim);
+        AimPlayer();
     }
 
-    private void HandleMovement()
+    private void MovePlayer(float horizontal, float vertical, float dt)
     {
-        float horizontal = movement.x;
-        float vertical = movement.y;
+        charCntrlMove.x = horizontal; // Horizontal
+        charCntrlMove.y = 0.0f;
+        charCntrlMove.z = vertical; // Vertical
 
-        move.x = horizontal;
-        move.y = 0.0f;
-        move.z = vertical;
+        cameraForward = Vector3.Scale(cam.up, new Vector3(1, 0, 1)).normalized;
+        Vector3 cameraMove = vertical * cameraForward + horizontal * cam.right;
+        cameraMove.Normalize();
 
-        charCntrl.Move(move * playerSpeed * Time.deltaTime);
+        Vector3 localMove = transform.InverseTransformDirection(cameraMove);
+        turnAmount = localMove.x;
+        forwardAmount = localMove.z;
 
-        animator.SetFloat("Horizontal", horizontal, 0.1f, Time.deltaTime);
-        animator.SetFloat("Vertical", vertical, 0.1f, Time.deltaTime);
-    }
-
-    private void HandleAim()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(aim);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, 100))
+        if (charCntrlMove != Vector3.zero)
         {
-            Vector3 target = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-            transform.LookAt(target);
+            charCntrl.Move(charCntrlMove * playerSpeed * dt);
+
+            animator.SetFloat("Horizontal", turnAmount, 0.1f, dt);
+            animator.SetFloat("Vertical", forwardAmount, 0.1f, dt);
+        }
+    }
+
+    private void AimPlayer()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(aimScreen);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            aimTarget.x = hit.point.x;
+            aimTarget.y = transform.position.y;
+            aimTarget.z = hit.point.z;
+        }
+
+        Vector3 targetAim = aimTarget - transform.position;
+        targetAim.y = 0.0f;
+        Quaternion rotation = Quaternion.LookRotation(targetAim);
+
+        aimDirection.x = aimTarget.x; 
+        aimDirection.y = 0.0f;
+        aimDirection.z = aimTarget.z;
+
+        if (aimDirection != Vector3.zero)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 5.0f);
         }
     }
 
@@ -81,7 +122,7 @@ public class HeroPlayerCntrl : MonoBehaviour
     {
         if (context.performed)
         {
-            aim = context.ReadValue<Vector2>();
+            aimScreen = context.ReadValue<Vector2>();
         }
     }
 
@@ -90,6 +131,8 @@ public class HeroPlayerCntrl : MonoBehaviour
         if (context.started)
         {
             Debug.Log("Started");
+            WeaponsCntrl control = weapon.GetComponent<WeaponsCntrl>();
+            control.OnFire();
         }
 
         if (context.canceled)
