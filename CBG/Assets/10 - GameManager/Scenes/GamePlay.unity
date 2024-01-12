@@ -1059,7 +1059,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 6425741681624954815}
-  damping: 4
+  damping: 0.5
 --- !u!1001 &982778160
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1475,75 +1475,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee81afb80bd75294cb740f6f220deafd, type: 3}
---- !u!1001 &4790536286247767461
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4790536285011776668, guid: 546cff25b93e0bd49a666643d586b45d,
-        type: 3}
-      propertyPath: m_Name
-      value: GeneralGun
-      objectReference: {fileID: 0}
-    - target: {fileID: 4790536285011776670, guid: 546cff25b93e0bd49a666643d586b45d,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4790536285011776670, guid: 546cff25b93e0bd49a666643d586b45d,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4790536285011776670, guid: 546cff25b93e0bd49a666643d586b45d,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.123
-      objectReference: {fileID: 0}
-    - target: {fileID: 4790536285011776670, guid: 546cff25b93e0bd49a666643d586b45d,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.452
-      objectReference: {fileID: 0}
-    - target: {fileID: 4790536285011776670, guid: 546cff25b93e0bd49a666643d586b45d,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4790536285011776670, guid: 546cff25b93e0bd49a666643d586b45d,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4790536285011776670, guid: 546cff25b93e0bd49a666643d586b45d,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4790536285011776670, guid: 546cff25b93e0bd49a666643d586b45d,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4790536285011776670, guid: 546cff25b93e0bd49a666643d586b45d,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4790536285011776670, guid: 546cff25b93e0bd49a666643d586b45d,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4790536285011776670, guid: 546cff25b93e0bd49a666643d586b45d,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 546cff25b93e0bd49a666643d586b45d, type: 3}
 --- !u!95 &6371924275737461525
 Animator:
   serializedVersion: 5
@@ -3871,7 +3802,7 @@ Transform:
   - {fileID: 6427745799179825559}
   - {fileID: 6427709207863737167}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &6425760795642742661
 Transform:
@@ -5536,6 +5467,7 @@ GameObject:
   - component: {fileID: 6429687791351829678}
   - component: {fileID: 6429687791351829677}
   - component: {fileID: 6429687791351829676}
+  - component: {fileID: 6429687791351829679}
   m_Layer: 0
   m_Name: HeroPlayer
   m_TagString: Untagged
@@ -5555,11 +5487,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cf9475fcb9e57f45a8d1c26a8c47507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputCntrl: {fileID: 6429687791351829679}
   playerSpeed: 3
   gravityValue: -9.81
   controllerDeadZone: 0.1
   gamePadRotateSmoothing: 1000
-  weaponSO: {fileID: 11400000, guid: 50ce78263c315674ebaa3bb8cff8af0f, type: 2}
+  weaponSO: {fileID: 11400000, guid: b319e8c5214cd1946b7cdf1b368daabf, type: 2}
   isGamePad: 0
 --- !u!114 &6429687791351829677
 MonoBehaviour:
@@ -5589,8 +5522,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6429687791351829676}
-        m_TargetAssemblyTypeName: HeroPlayerCntrl, Assembly-CSharp
+      - m_Target: {fileID: 6429687791351829679}
+        m_TargetAssemblyTypeName: InputCntrl, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
@@ -5605,8 +5538,8 @@ MonoBehaviour:
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6429687791351829676}
-        m_TargetAssemblyTypeName: HeroPlayerCntrl, Assembly-CSharp
+      - m_Target: {fileID: 6429687791351829679}
+        m_TargetAssemblyTypeName: InputCntrl, Assembly-CSharp
         m_MethodName: OnAim
         m_Mode: 0
         m_Arguments:
@@ -5621,8 +5554,8 @@ MonoBehaviour:
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6429687791351829676}
-        m_TargetAssemblyTypeName: HeroPlayerCntrl, Assembly-CSharp
+      - m_Target: {fileID: 6429687791351829679}
+        m_TargetAssemblyTypeName: InputCntrl, Assembly-CSharp
         m_MethodName: OnFire
         m_Mode: 0
         m_Arguments:
@@ -5698,6 +5631,18 @@ CharacterController:
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.89, z: 0}
+--- !u!114 &6429687791351829679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6429687791351829675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da9e7127dfea80342be5dc9c90a23924, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6429689468075989889
 GameObject:
   m_ObjectHideFlags: 0

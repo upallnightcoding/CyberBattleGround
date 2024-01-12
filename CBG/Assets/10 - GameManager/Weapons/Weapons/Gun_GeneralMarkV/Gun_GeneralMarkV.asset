@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7611a9aa9ab36b54b8dab41f7d22113f, type: 3}
-  m_Name: Pistol_GeneralGun
+  m_Name: Gun_GeneralMarkV
   m_EditorClassIdentifier: 
-  weaponName: General Pistol
+  weaponName: General Mark V
   numberRounds: 9
-  timeBetweenRoundsSec: 0.5
+  roundsPerSec: 1
   reloadTimeSec: 2
+  automatic: 1
+  roundSpeed: 3
   weapon: {fileID: 4790536285011776668, guid: 546cff25b93e0bd49a666643d586b45d, type: 3}
-  muzzleBlast: {fileID: 2282264867569893720, guid: a035e523c2292be47906c6a103896c92,
+  muzzleFlash: {fileID: 6011677710867935586, guid: bf6f71b369ca29040b5551b004077073,
     type: 3}
   round: {fileID: 7910784132420428018, guid: f99245b12ae461843ab5a84106a81cee, type: 3}

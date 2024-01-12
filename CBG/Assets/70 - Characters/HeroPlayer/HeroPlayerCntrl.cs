@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class HeroPlayerCntrl : MonoBehaviour
 {
+    [SerializeField] private InputCntrl inputCntrl;
     [SerializeField] private float playerSpeed = 5.0f;
     [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float controllerDeadZone = 0.1f;
@@ -20,6 +21,7 @@ public class HeroPlayerCntrl : MonoBehaviour
 
     private Vector2 movement;
     private Vector2 aimScreen;
+    private OnFireState fireState;
 
     private Animator animator;
 
@@ -39,6 +41,8 @@ public class HeroPlayerCntrl : MonoBehaviour
     float forwardAmount;
     float turnAmount;
 
+    WeaponsCntrl control;
+
     private void Awake()
     {
         charCntrl = GetComponent<CharacterController>();
@@ -52,24 +56,53 @@ public class HeroPlayerCntrl : MonoBehaviour
     void Start()
     {
         weapon = Instantiate(weaponSO.weapon, new Vector3(0.618f, 1.123f, 1.452f), Quaternion.identity);
+        control = weapon.GetComponent<WeaponsCntrl>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        MovePlayer(movement.x, movement.y, Time.deltaTime);
-        //HandleAim(aim);
+        movement = inputCntrl.Movement;
+        aimScreen = inputCntrl.AimScreen;
+        fireState = inputCntrl.FireState;
+
+        MovePlayer(Time.deltaTime);
         AimPlayer();
+        TriggerOnFire();
     }
 
-    private void MovePlayer(float horizontal, float vertical, float dt)
+    private void TriggerOnFire()
     {
-        charCntrlMove.x = horizontal; // Horizontal
+        switch(fireState)
+        {
+            case OnFireState.NOT_FIRING:
+                break;
+            case OnFireState.START_FIRING:
+                FireWeapon();
+                break;
+            case OnFireState.END_FIRING:
+                break;
+        }
+    }
+
+    private void FireWeapon()
+    {
+        control.FireWeapon();
+    }
+
+    private void FinishedShooting()
+    {
+        control.FinishedShooting();
+    }
+
+    private void MovePlayer(float dt)
+    {
+        charCntrlMove.x = movement.x; // Horizontal
         charCntrlMove.y = 0.0f;
-        charCntrlMove.z = vertical; // Vertical
+        charCntrlMove.z = movement.y; // Vertical
 
         cameraForward = Vector3.Scale(cam.up, new Vector3(1, 0, 1)).normalized;
-        Vector3 cameraMove = vertical * cameraForward + horizontal * cam.right;
+        Vector3 cameraMove = movement.y * cameraForward + movement.x * cam.right;
         cameraMove.Normalize();
 
         Vector3 localMove = transform.InverseTransformDirection(cameraMove);
@@ -107,37 +140,6 @@ public class HeroPlayerCntrl : MonoBehaviour
         if (aimDirection != Vector3.zero)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 5.0f);
-        }
-    }
-
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            movement = context.ReadValue<Vector2>();
-        }
-    }
-
-    public void OnAim(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            aimScreen = context.ReadValue<Vector2>();
-        }
-    }
-
-    public void OnFire(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            Debug.Log("Started");
-            WeaponsCntrl control = weapon.GetComponent<WeaponsCntrl>();
-            control.OnFire();
-        }
-
-        if (context.canceled)
-        {
-            Debug.Log("Canceled");
         }
     }
 }
