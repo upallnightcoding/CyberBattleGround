@@ -41,7 +41,7 @@ public class HeroPlayerCntrl : MonoBehaviour
     float forwardAmount;
     float turnAmount;
 
-    WeaponsCntrl control;
+    WeaponsCntrl weaponCntrl;
 
     private void Awake()
     {
@@ -56,7 +56,7 @@ public class HeroPlayerCntrl : MonoBehaviour
     void Start()
     {
         weapon = Instantiate(weaponSO.weapon, new Vector3(0.618f, 1.123f, 1.452f), Quaternion.identity);
-        control = weapon.GetComponent<WeaponsCntrl>();
+        weaponCntrl = weapon.GetComponent<WeaponsCntrl>();
     }
 
     // Update is called once per frame
@@ -78,21 +78,15 @@ public class HeroPlayerCntrl : MonoBehaviour
             case OnFireState.NOT_FIRING:
                 break;
             case OnFireState.START_FIRING:
-                FireWeapon();
+                weaponCntrl.FireWeapon();
                 break;
             case OnFireState.END_FIRING:
                 break;
+            case OnFireState.RELOAD:
+                weaponCntrl.StartReloading();
+                inputCntrl.ResetReload();
+                break;
         }
-    }
-
-    private void FireWeapon()
-    {
-        control.FireWeapon();
-    }
-
-    private void FinishedShooting()
-    {
-        control.FinishedShooting();
     }
 
     private void MovePlayer(float dt)

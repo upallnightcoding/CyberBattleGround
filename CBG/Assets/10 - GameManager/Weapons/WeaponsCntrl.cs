@@ -8,16 +8,15 @@ public class WeaponsCntrl : MonoBehaviour
     [SerializeField] private Transform muzzlePoint;
 
     private bool shooting;
+    private bool reloading;
     private int numberRounds;
-
-    private WeaponsCntrlState currentState;
 
     // Start is called before the first frame update
     void Awake()
     {
         numberRounds = weapon.numberRounds;
         shooting = false;
-        currentState = WeaponsCntrlState.WAITING_TO_SHOOT;
+        reloading = false;
     }
 
     // Update is called once per frame
@@ -26,44 +25,29 @@ public class WeaponsCntrl : MonoBehaviour
         
     }
 
+    public void StartReloading()
+    {
+        reloading = true;
+        numberRounds = weapon.numberRounds;
+        Invoke(nameof(FinishedReloading), weapon.reloadTimeSec);
+    }
+
+    private void FinishedReloading()
+    {
+        reloading = false;
+    }
+
     public void FireWeapon()
     {
-        switch(currentState)
-        {
-            case WeaponsCntrlState.WAITING_TO_SHOOT:
-                currentState = WeaponsCntrlState.SHOOTING;
-                break;
-            case WeaponsCntrlState.SHOOTING:
-                break;
-            case WeaponsCntrlState.WAITING_TO_STOP_SHOOTING:
-                break;
-            case WeaponsCntrlState.RELOAD:
-                break;
-        }
-    }
-
-    private WeaponsCntrlState WaitingToShootState()
-    {
-        WeaponsCntrlState nextState = WeaponsCntrlState.SHOOTING;
-
-        return (WeaponsCntrlState.SHOOTING);
-    }
-
-    public void FireWeapon1()
-    {
-        if (!shooting)
+        if (!shooting && numberRounds-- > 0)
         {
             shooting = true;
             Instantiate(weapon.muzzleFlash, muzzlePoint.position, muzzlePoint.rotation);
             GameObject round = Instantiate(weapon.round, muzzlePoint.position, Quaternion.identity);
-            round.transform.forward = muzzlePoint.transform.forward;
+            round.transform.forward = muzzlePoint.forward;
             round.GetComponent<Rigidbody>().AddForce(muzzlePoint.forward * weapon.roundSpeed, ForceMode.Impulse);
-            Invoke("FinishedShooting", weapon.SecBetweenRounds());
 
-            if (--numberRounds == 0)
-            {
-
-            }
+            Invoke(nameof(FinishedShooting), weapon.SecBetweenRounds());
         }
     }
 
@@ -71,12 +55,4 @@ public class WeaponsCntrl : MonoBehaviour
     {
         shooting = false;
     }
-}
-
-public enum WeaponsCntrlState
-{
-    WAITING_TO_SHOOT,
-    SHOOTING,
-    WAITING_TO_STOP_SHOOTING,
-    RELOAD
 }

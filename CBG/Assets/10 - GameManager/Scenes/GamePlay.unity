@@ -5608,6 +5608,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 6edfc18c-439a-48c2-ba50-8377a2dd933c
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6429687791351829679}
+        m_TargetAssemblyTypeName: InputCntrl, Assembly-CSharp
+        m_MethodName: OnReload
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 52e90981-1ab4-4a50-b01d-1225de536f08
+    m_ActionName: Player/Reload[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

@@ -10,6 +10,11 @@ public class InputCntrl : MonoBehaviour
     public Vector2 Movement { get; private set; }
     public Vector2 AimScreen { get; private set; }
 
+    public void ResetReload()
+    {
+        FireState = OnFireState.NOT_FIRING;
+    }
+
     public void OnMove(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -38,11 +43,20 @@ public class InputCntrl : MonoBehaviour
             FireState = OnFireState.END_FIRING;
         }
     }
+
+    public void OnReload(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            FireState = OnFireState.RELOAD;
+        }
+    }
 }
 
 public enum OnFireState
 {
     NOT_FIRING,
     START_FIRING,
-    END_FIRING
+    END_FIRING,
+    RELOAD
 }
