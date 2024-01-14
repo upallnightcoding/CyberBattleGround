@@ -17,7 +17,7 @@ MonoBehaviour:
   roundsPerSec: 1
   reloadTimeSec: 2
   automatic: 1
-  roundSpeed: 3
+  roundSpeed: 50
   weapon: {fileID: 4790536285011776668, guid: 546cff25b93e0bd49a666643d586b45d, type: 3}
   muzzleFlash: {fileID: 6011677710867935586, guid: bf6f71b369ca29040b5551b004077073,
     type: 3}

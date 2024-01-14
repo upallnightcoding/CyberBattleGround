@@ -13,7 +13,7 @@ public class HeroPlayerCntrl : MonoBehaviour
     [SerializeField] private float gamePadRotateSmoothing = 1000.0f;
 
     [SerializeField] private WeaponsSO weaponSO;
-    private GameObject weapon;
+    [SerializeField] private GameObject weapon;
 
     [SerializeField] bool isGamePad;
 
@@ -55,7 +55,7 @@ public class HeroPlayerCntrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        weapon = Instantiate(weaponSO.weapon, new Vector3(0.618f, 1.123f, 1.452f), Quaternion.identity);
+        //weapon = Instantiate(weaponSO.weapon, new Vector3(0.618f, 1.123f, 1.452f), Quaternion.identity);
         weaponCntrl = weapon.GetComponent<WeaponsCntrl>();
     }
 
