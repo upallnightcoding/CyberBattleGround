@@ -5,8 +5,9 @@ using UnityEngine.AI;
 
 public class EnemyCntrl : MonoBehaviour
 {
-    [SerializeField] private Transform target;
+    [SerializeField] private Transform player;
     [SerializeField] private float pathUpdateDelay = 0.2f;
+    [SerializeField] private GameObject weapon;
 
     private NavMeshAgent navMeshAgent;
     private Animator animator;
@@ -29,7 +30,7 @@ public class EnemyCntrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool inRange = Vector3.Distance(transform.position, target.position) <= shootingDistance;
+        bool inRange = Vector3.Distance(transform.position, player.position) <= shootingDistance;
 
         if (inRange)
         {
@@ -46,12 +47,13 @@ public class EnemyCntrl : MonoBehaviour
 
     public void Shoot()
     {
-        Debug.Log("Enemy is shooting ...");
+        weapon.GetComponent<WeaponsCntrl>().FireWeapon();
+        Debug.Log("Shooting ...");
     }
 
     private void LookAtTarget()
     {
-        Vector3 lookPos = target.position - transform.position;
+        Vector3 lookPos = player.position - transform.position;
         lookPos.y = 0.0f;
         Quaternion rotation = Quaternion.LookRotation(lookPos);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.2f);
@@ -62,7 +64,7 @@ public class EnemyCntrl : MonoBehaviour
         if (Time.time >= pathUpdateDeadLine)
         {
             pathUpdateDeadLine = Time.time + pathUpdateDelay;
-            navMeshAgent.SetDestination(target.position);
+            navMeshAgent.SetDestination(player.position);
         }
     }
 

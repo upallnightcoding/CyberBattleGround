@@ -12,7 +12,7 @@ public class HeroPlayerCntrl : MonoBehaviour
     [SerializeField] private float controllerDeadZone = 0.1f;
     [SerializeField] private float gamePadRotateSmoothing = 1000.0f;
 
-    [SerializeField] private WeaponsSO weaponSO;
+    //[SerializeField] private WeaponsSO weaponSO;
     [SerializeField] private GameObject weapon;
 
     [SerializeField] bool isGamePad;

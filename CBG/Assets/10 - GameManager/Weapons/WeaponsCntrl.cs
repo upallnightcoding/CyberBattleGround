@@ -47,6 +47,9 @@ public class WeaponsCntrl : MonoBehaviour
             round.transform.forward = muzzlePoint.forward;
             round.GetComponent<Rigidbody>().AddForce(muzzlePoint.forward * weapon.roundSpeed, ForceMode.Impulse);
 
+            Debug.DrawLine(muzzlePoint.position, muzzlePoint.position + muzzlePoint.forward * 10.0f, Color.red, 30.0f);
+            Debug.Log($"FireWeapong: {shooting}/{numberRounds}/{muzzlePoint.forward}");
+
             Invoke(nameof(FinishedShooting), weapon.SecBetweenRounds());
         }
     }

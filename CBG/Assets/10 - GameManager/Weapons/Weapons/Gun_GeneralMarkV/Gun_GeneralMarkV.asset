@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Gun_GeneralMarkV
   m_EditorClassIdentifier: 
   weaponName: General Mark V
-  numberRounds: 9
+  numberRounds: 20
   roundsPerSec: 1
   reloadTimeSec: 2
   automatic: 1
