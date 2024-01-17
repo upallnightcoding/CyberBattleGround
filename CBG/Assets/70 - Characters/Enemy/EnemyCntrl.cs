@@ -15,10 +15,15 @@ public class EnemyCntrl : MonoBehaviour
     private float shootingDistance;
     private float pathUpdateDeadLine = 0.0f;
 
+    private FiniteStateMachine fsm = null;
+
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+
+        fsm = new FiniteStateMachine();
+        fsm.Add(new StateEnemyIdle(this));
     }
 
     // Start is called before the first frame update
@@ -27,8 +32,18 @@ public class EnemyCntrl : MonoBehaviour
         shootingDistance = navMeshAgent.stoppingDistance;
     }
 
-    // Update is called once per frame
     void Update()
+    {
+        fsm.OnUpdate(Time.deltaTime);
+    }
+
+    public void Speed()
+    {
+        animator.SetFloat("speed", navMeshAgent.desiredVelocity.sqrMagnitude);
+    }
+
+    // Update is called once per frame
+    void xxxUpdate()
     {
         bool inRange = Vector3.Distance(transform.position, player.position) <= shootingDistance;
 
