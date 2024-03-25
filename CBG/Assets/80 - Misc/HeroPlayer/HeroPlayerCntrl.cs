@@ -63,8 +63,8 @@ public class HeroPlayerCntrl : MonoBehaviour
     void Update()
     {
         movement = inputCntrl.Movement;
-        aimScreen = inputCntrl.AimScreen;
-        fireState = inputCntrl.FireState;
+        //aimScreen = inputCntrl.AimScreen;
+        //fireState = inputCntrl.FireState;
 
         MovePlayer(Time.deltaTime);
         AimPlayer();
@@ -84,7 +84,7 @@ public class HeroPlayerCntrl : MonoBehaviour
                 break;
             case OnFireState.RELOAD:
                 weaponCntrl.StartReloading();
-                inputCntrl.ResetReload();
+                //inputCntrl.ResetReload();
                 break;
         }
     }
