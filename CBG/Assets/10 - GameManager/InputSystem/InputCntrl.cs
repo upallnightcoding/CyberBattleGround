@@ -6,19 +6,26 @@ using UnityEngine.InputSystem;
 public class InputCntrl : MonoBehaviour
 {
     public Vector2 Movement { get; private set; }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Vector2 Look { get; private set; }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.started)
         {
             Movement = context.ReadValue<Vector2>();
-            Debug.Log($"Movement: {Movement}");
+        }
+
+        if (context.canceled)
+        {
+            Movement = Vector2.zero;
+        }
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Look = context.ReadValue<Vector2>();
         }
     }
 }
