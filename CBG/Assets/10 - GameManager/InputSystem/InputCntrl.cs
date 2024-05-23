@@ -11,6 +11,10 @@ public class InputCntrl : MonoBehaviour
 
     private bool firstLook = true;
 
+    private InputCntrlDrag drag = null;
+
+    public void SetDrag(InputCntrlDrag drag) => this.drag = drag;
+
     public void OnMove(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -26,25 +30,28 @@ public class InputCntrl : MonoBehaviour
         }
     }
 
+    public void OnLeftMouseButton(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            drag.LeftMouseButton(context);
+        }
+    }
+
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            drag.FireWeapon();
+        }
+    }
+
     public void OnLook(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             Look = context.ReadValue<Vector2>();
             //Debug.Log($"OnLook Performed: {Look}");
-        }
-    }
-
-    public void xxOnFire(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Debug.Log($"OnFire Performed ...");
-        }
-
-        if (context.canceled)
-        {
-            Debug.Log($"OnFire Cancel ...");
         }
     }
 
@@ -56,6 +63,10 @@ public class InputCntrl : MonoBehaviour
             IsAiming = !IsAiming;
         }
     }
+}
 
-    
+public interface InputCntrlDrag
+{
+    public void LeftMouseButton(InputAction.CallbackContext context);
+    public void FireWeapon();
 }
