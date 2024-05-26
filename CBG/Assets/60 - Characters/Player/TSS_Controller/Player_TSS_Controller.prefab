@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &562435763
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 562435764}
+  m_Layer: 0
+  m_Name: GunPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &562435764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562435763}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0048, y: 0.0049, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2262825276541103445}
+  m_Father: {fileID: 7808090388218692593}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7802807728819082551
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +189,7 @@ Transform:
   m_Children:
   - {fileID: 7801860025023479271}
   m_Father: {fileID: 7808090388218692593}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7802841209748245941
 GameObject:
@@ -1006,6 +1038,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3292b60249fff3d4c8a47c3b54f0e4e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 807032929094829589, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+    type: 3}
+  weaponPosition: {fileID: 562435764}
 --- !u!114 &6935734471926708923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1065,7 +1100,19 @@ MonoBehaviour:
     m_ActionId: 8ee14f79-ab19-406f-a38e-9880b90f2933
     m_ActionName: Player/Look[/DualShock4GamepadHID/rightStick,/Mouse/delta]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6337062189019886466}
+        m_TargetAssemblyTypeName: TTS_Controller.Player_TSS_Controller, Assembly-CSharp
+        m_MethodName: OnFire
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: caa575ac-14e6-4620-b8c1-4be4787c94e8
     m_ActionName: Player/Fire[/DualShock4GamepadHID/rightTrigger,/Mouse/leftButton]
   - m_PersistentCalls:
@@ -2098,6 +2145,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 562435764}
   - {fileID: 7801707184800374301}
   - {fileID: 7808078207854177781}
   - {fileID: 7801667235951716165}
@@ -2434,7 +2482,7 @@ Transform:
   m_Children:
   - {fileID: 7807903035063962151}
   m_Father: {fileID: 7808090388218692593}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7804224397061183959
 GameObject:
@@ -2727,7 +2775,7 @@ Transform:
   m_Children:
   - {fileID: 7808042980322228335}
   m_Father: {fileID: 7808090388218692593}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7804280091319734277
 GameObject:
@@ -4442,3 +4490,83 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0.08718431, z: -0.004061833}
     m_Extent: {x: 0.10245618, y: 0.09860408, z: 0.02994819}
   m_DirtyAABB: 0
+--- !u!1001 &1467391547006228712
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 562435764}
+    m_Modifications:
+    - target: {fileID: 807032929094829589, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+        type: 3}
+      propertyPath: m_Name
+      value: BasicPistolPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 807032929094829589, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 808980317329585597, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 808980317329585597, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0002
+      objectReference: {fileID: 0}
+    - target: {fileID: 808980317329585597, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0012
+      objectReference: {fileID: 0}
+    - target: {fileID: 808980317329585597, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.004
+      objectReference: {fileID: 0}
+    - target: {fileID: 808980317329585597, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 808980317329585597, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 808980317329585597, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 808980317329585597, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 808980317329585597, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: 808980317329585597, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 808980317329585597, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 90
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 55bc3e4297bfd4f45a0cbe24dd08f880, type: 3}
+--- !u!4 &2262825276541103445 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 808980317329585597, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+    type: 3}
+  m_PrefabInstance: {fileID: 1467391547006228712}
+  m_PrefabAsset: {fileID: 0}

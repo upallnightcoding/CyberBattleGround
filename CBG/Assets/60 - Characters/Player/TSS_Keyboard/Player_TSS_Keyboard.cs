@@ -60,7 +60,7 @@ namespace Player_TSS_Keyboard
             animator.SetFloat("Turn", turnAmount, 0.1f, Time.deltaTime);
 
             Vector3 movement = new Vector3(horizontal, 0.0f, vertical);
-            charCntrl.Move(movement * speed * Time.deltaTime);
+            //charCntrl.Move(movement * speed * Time.deltaTime);
         }
 
         public void OnMove(InputAction.CallbackContext context)

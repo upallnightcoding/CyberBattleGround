@@ -7,129 +7,95 @@ namespace TTS_Controller
 {
     public class Player_TSS_Controller : MonoBehaviour
     {
+        [SerializeField] private GameObject weaponPrefab;
+        [SerializeField] private Transform weaponPosition;
+
         private Animator animator;
-        private Vector3 v3_movement;
-        private Vector3 v3_aim;
-        private float rotation_speed = 1000.0f;
+        private Vector3 moveCntrl, aimCntrl;
+        private float rotationSpeed = 1000.0f;
+
+        private WeaponsCntrl weaponCntrl;
 
         private Vector2 leftControl, rightControl;
-
-        private Vector3 preTargetPoint = Vector3.zero;
 
         // Start is called before the first frame update
         void Start()
         {
             animator = GetComponent<Animator>();
+
+            GameObject weapon = Instantiate(weaponPrefab, weaponPosition);
+            weaponCntrl = weapon.GetComponent<WeaponsCntrl>();
+            weapon.transform.localRotation = Quaternion.Euler(0.0f, 90.0f, -90.0f);
         }
 
-        void FixedUpdate()
+        void Update()
         {
-            //Update_TSS_Controller();
-            Update_TSS_KeyBoard();
+            Update_TSS_Controller();
         }
 
-        void Update_TSS_KeyBoard()
+        void Update_TSS_Controller()
         {
-            //Vector2 rightControl = Gamepad.current.rightStick.value;
+            Gamepad controller = Gamepad.current;
+            if (controller == null) return;
 
-            Vector3 camera_rotation = new Vector3(Camera.main.transform.forward.x, 0.0f, Camera.main.transform.forward.z);
+            Vector3 cameraRotation = new Vector3(Camera.main.transform.forward.x, 0.0f, Camera.main.transform.forward.z);
 
-            v3_movement = new Vector3(leftControl.x, 0.0f, leftControl.y);
-            float movement_amount = Mathf.Abs(v3_movement.x) + Mathf.Abs(v3_movement.z);
+            //movement = new Vector3(controller.leftStick.x.value, 0.0f, controller.leftStick.y.value);
+            //aim = new Vector3(controller.rightStick.x.value, 0.0f, controller.rightStick.y.value);
 
-            //v3_aim = new Vector3(rightControl.x, 0.0f, rightControl.y);
-            //float aim_amount = Mathf.Abs(v3_aim.x) + Mathf.Abs(v3_aim.z);
+            moveCntrl = new Vector3(leftControl.x, 0.0f, leftControl.y);
+            aimCntrl = new Vector3(rightControl.x, 0.0f, rightControl.y);
 
-            //Vector2 targetPoint = Mouse.current.position.ReadValue();
-            Vector2 targetPoint = rightControl;
-            Debug.Log($"Target Point: {targetPoint}");
-            Vector3 hitPoint = Vector3.zero;
-            float aim_amount = 0.0f;
+            float moveAmt = Mathf.Abs(moveCntrl.x) + Mathf.Abs(moveCntrl.z);
+            float aimAmt = Mathf.Abs(aimCntrl.x) + Mathf.Abs(aimCntrl.z);
 
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(targetPoint), out RaycastHit hit, 100.0f))
+            aimCntrl.Normalize();
+
+            //Debug.Log($"Aim/AimAmount: {aimCntrl}/{aimAmt}");
+
+            if (IsAming(aimAmt))
             {
-                hitPoint = hit.point;
-                v3_aim = hitPoint - transform.position;
-                aim_amount = Vector3.Distance(hitPoint, preTargetPoint);
-                Debug.Log($"hitPoint/preTargetPoint: {hitPoint}/{preTargetPoint}");
-            }
+                //Quaternion targetRotation = Quaternion.LookRotation(Quaternion.LookRotation(cameraRotation) * aimCntrl);
+                //transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                RotatePlayer(cameraRotation, aimCntrl);
 
-            if (aim_amount > 0.0)
-            {
-                Quaternion target_rotation = Quaternion.LookRotation(Quaternion.LookRotation(camera_rotation) * v3_aim);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, target_rotation, rotation_speed * Time.deltaTime);
-
-                Vector3 walk_aim_direction = Quaternion.LookRotation(new Vector3(-v3_aim.x, 0.0f, v3_aim.z)) * v3_movement;
-                animator.SetFloat("aim_x", walk_aim_direction.x, 0.15f, Time.deltaTime);
-                animator.SetFloat("aim_y", walk_aim_direction.z, 0.15f, Time.deltaTime);
-
-                preTargetPoint = hitPoint;
+                Vector3 walkAimDirection = Quaternion.LookRotation(new Vector3(-aimCntrl.x, 0.0f, aimCntrl.z)) * moveCntrl;
+                animator.SetFloat("aim_x", walkAimDirection.x, 0.15f, Time.deltaTime);
+                animator.SetFloat("aim_y", walkAimDirection.z, 0.15f, Time.deltaTime);
             }
             else
             {
-                if (movement_amount > 0)
+                if (IsMoving(moveAmt))
                 {
-                    Quaternion target_rotation = Quaternion.LookRotation(Quaternion.LookRotation(camera_rotation) * v3_movement);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, target_rotation, rotation_speed * Time.deltaTime);
+                    //Quaternion targetRotation = Quaternion.LookRotation(Quaternion.LookRotation(cameraRotation) * moveCntrl);
+                    //transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                    RotatePlayer(cameraRotation, moveCntrl);
                 }
             }
 
-            if (aim_amount > 0)
-            {
-            }
-
-            Debug.Log($"Aim Amount/Aim Amount: {v3_aim}/{aim_amount}");
-            animator.SetFloat("movement_amount", movement_amount);
-            animator.SetBool("is_aiming", aim_amount > 0.0 ? true : false);
-            //animator.SetBool("is_aiming", true);
-
+            animator.SetFloat("movement_amount", moveAmt);
+            animator.SetBool("is_aiming", IsAming(aimAmt));
         }
 
-        void Update_TSS_Cntrl()
+        private void Fire()
         {
-            Vector2 rightControl = Gamepad.current.rightStick.value;
-
-            Vector3 camera_rotation = new Vector3(Camera.main.transform.forward.x, 0.0f, Camera.main.transform.forward.z);
-
-            v3_movement = new Vector3(leftControl.x, 0.0f, leftControl.y);
-            v3_aim = new Vector3(rightControl.x, 0.0f, rightControl.y);
-
-            float movement_amount = Mathf.Abs(v3_movement.x) + Mathf.Abs(v3_movement.z);
-            float aim_amount = Mathf.Abs(v3_aim.x) + Mathf.Abs(v3_aim.z);
-
-            if (aim_amount > 0.3)
-            {
-                Quaternion target_rotation = Quaternion.LookRotation(Quaternion.LookRotation(camera_rotation) * v3_aim);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, target_rotation, rotation_speed * Time.deltaTime);
-
-                Vector3 walk_aim_direction = Quaternion.LookRotation(new Vector3(-v3_aim.x, 0.0f, v3_aim.z)) * v3_movement;
-                animator.SetFloat("aim_x", walk_aim_direction.x, 0.15f, Time.deltaTime);
-                animator.SetFloat("aim_y", walk_aim_direction.z, 0.15f, Time.deltaTime);
-            }
-            else
-            {
-                if (movement_amount > 0)
-                {
-                    Quaternion target_rotation = Quaternion.LookRotation(Quaternion.LookRotation(camera_rotation) * v3_movement);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, target_rotation, rotation_speed * Time.deltaTime);
-                }
-            }
-
-            if(aim_amount > 0)
-            {
-                Debug.Log($"Aim Amount/Aim Amount: {v3_aim}/{aim_amount}");
-            }
-
-            animator.SetFloat("movement_amount", movement_amount);
-            animator.SetBool("is_aiming", aim_amount > 0.3 ? true : false);
-
+            weaponCntrl.FireWeapon();
         }
+
+        private void RotatePlayer(Vector3 cameraRotation, Vector3 direction)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(Quaternion.LookRotation(cameraRotation) * direction);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+
+        private bool IsAming(float aimAmt) => (aimAmt > 0.3f);
+
+        private bool IsMoving(float moveAmt) => (moveAmt > 0.0f);
 
         public void OnMove(InputAction.CallbackContext context)
         {
             if (context.performed)
             {
-                //Debug.Log($"OnMove Performed ... {context.ReadValue<Vector2>()}");
                 leftControl = context.ReadValue<Vector2>();
             }
 
@@ -143,54 +109,16 @@ namespace TTS_Controller
         {
             if (context.performed)
             {
-                //Debug.Log($"OnAim Performed ... {context.ReadValue<Vector2>()}");
                 rightControl = context.ReadValue<Vector2>();
             }
         }
 
-        private void xxOnAnimatorMove()
+        public void OnFire(InputAction.CallbackContext context)
         {
-            Vector3 velocity = animator.deltaPosition;
-
-            //charCntrl.Move(velocity);
-        }
-
-        // ==================================================================
-        void Update_TSS_Controller()
-        {
-            var controller = Gamepad.current;
-            if (controller == null) return;
-
-            v3_movement = new Vector3(controller.leftStick.x.value, 0.0f, controller.leftStick.y.value);
-            v3_aim = new Vector3(controller.rightStick.x.value, 0.0f, controller.rightStick.y.value);
-
-            Debug.Log($"Left Stick: {controller.leftStick.x.value}/{controller.leftStick.y.value}");
-            Debug.Log($"Right Stick: {controller.rightStick.x.value}/{controller.rightStick.y.value}");
-
-            float movement_amount = Mathf.Abs(v3_movement.x) + Mathf.Abs(v3_movement.z);
-            float aim_amount = Mathf.Abs(v3_aim.x) + Mathf.Abs(v3_aim.z);
-            Vector3 camera_rotation = new Vector3(Camera.main.transform.forward.x, 0.0f, Camera.main.transform.forward.z);
-
-            if (aim_amount > 0)
+            if (context.performed)
             {
-                Quaternion target_rotation = Quaternion.LookRotation(Quaternion.LookRotation(camera_rotation) * v3_aim);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, target_rotation, rotation_speed * Time.deltaTime);
-
-                Vector3 walk_aim_direction = Quaternion.LookRotation(new Vector3(-v3_aim.x, 0.0f, v3_aim.z)) * v3_movement;
-                animator.SetFloat("aim_x", walk_aim_direction.x, 0.15f, Time.deltaTime);
-                animator.SetFloat("aim_y", walk_aim_direction.z, 0.15f, Time.deltaTime);
-            } else
-            {
-                if (movement_amount > 0)
-                {
-                    Quaternion target_rotation = Quaternion.LookRotation(Quaternion.LookRotation(camera_rotation) * v3_movement);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, target_rotation, rotation_speed * Time.deltaTime);
-                }
+                Fire();
             }
-
-            animator.SetFloat("movement_amount", movement_amount);
-            animator.SetBool("is_aiming", aim_amount > 0 ? true : false);
-
         }
     }
 }
