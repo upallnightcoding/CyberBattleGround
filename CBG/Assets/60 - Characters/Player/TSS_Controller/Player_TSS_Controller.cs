@@ -16,6 +16,8 @@ namespace TTS_Controller
 
         private WeaponsCntrl weaponCntrl;
 
+        private bool aimLock = false;
+
         private Vector2 leftControl, rightControl;
 
         // Start is called before the first frame update
@@ -40,9 +42,6 @@ namespace TTS_Controller
 
             Vector3 cameraRotation = new Vector3(Camera.main.transform.forward.x, 0.0f, Camera.main.transform.forward.z);
 
-            //movement = new Vector3(controller.leftStick.x.value, 0.0f, controller.leftStick.y.value);
-            //aim = new Vector3(controller.rightStick.x.value, 0.0f, controller.rightStick.y.value);
-
             moveCntrl = new Vector3(leftControl.x, 0.0f, leftControl.y);
             aimCntrl = new Vector3(rightControl.x, 0.0f, rightControl.y);
 
@@ -51,12 +50,8 @@ namespace TTS_Controller
 
             aimCntrl.Normalize();
 
-            //Debug.Log($"Aim/AimAmount: {aimCntrl}/{aimAmt}");
-
             if (IsAming(aimAmt))
             {
-                //Quaternion targetRotation = Quaternion.LookRotation(Quaternion.LookRotation(cameraRotation) * aimCntrl);
-                //transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
                 RotatePlayer(cameraRotation, aimCntrl);
 
                 Vector3 walkAimDirection = Quaternion.LookRotation(new Vector3(-aimCntrl.x, 0.0f, aimCntrl.z)) * moveCntrl;
@@ -67,8 +62,6 @@ namespace TTS_Controller
             {
                 if (IsMoving(moveAmt))
                 {
-                    //Quaternion targetRotation = Quaternion.LookRotation(Quaternion.LookRotation(cameraRotation) * moveCntrl);
-                    //transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
                     RotatePlayer(cameraRotation, moveCntrl);
                 }
             }
@@ -77,18 +70,15 @@ namespace TTS_Controller
             animator.SetBool("is_aiming", IsAming(aimAmt));
         }
 
-        private void Fire()
-        {
-            weaponCntrl.FireWeapon();
-        }
-
         private void RotatePlayer(Vector3 cameraRotation, Vector3 direction)
         {
             Quaternion targetRotation = Quaternion.LookRotation(Quaternion.LookRotation(cameraRotation) * direction);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
-        private bool IsAming(float aimAmt) => (aimAmt > 0.3f);
+        private void Fire() => weaponCntrl.FireWeapon();
+
+        private bool IsAming(float aimAmt) => (aimAmt > 0.3f) || aimLock;
 
         private bool IsMoving(float moveAmt) => (moveAmt > 0.0f);
 
@@ -103,6 +93,7 @@ namespace TTS_Controller
             {
                 leftControl = Vector2.zero;
             }
+
         }
 
         public void OnAim(InputAction.CallbackContext context)
@@ -110,6 +101,7 @@ namespace TTS_Controller
             if (context.performed)
             {
                 rightControl = context.ReadValue<Vector2>();
+                Debug.Log($"rightControl: {rightControl}");
             }
         }
 
@@ -120,6 +112,16 @@ namespace TTS_Controller
                 Fire();
             }
         }
+
+        public void OnAimLock(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                aimLock = !aimLock;
+            }
+        }
+
+
     }
 }
 

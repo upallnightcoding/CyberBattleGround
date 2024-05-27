@@ -43,11 +43,14 @@ public class WeaponsCntrl : MonoBehaviour
             inCoolDown = true;
             Invoke("ResetCoolDown", weapons.coolDownPeriodSec);
         }
+
+        EventCntrl.Instance.InvokeOnUpdateNumberRounds(numberRounds);
     }
 
     private void ResetCoolDown()
     {
         numberRounds = weapons.numberRounds;
+        EventCntrl.Instance.InvokeOnUpdateNumberRounds(numberRounds);
         inCoolDown = false;
     }
 }
