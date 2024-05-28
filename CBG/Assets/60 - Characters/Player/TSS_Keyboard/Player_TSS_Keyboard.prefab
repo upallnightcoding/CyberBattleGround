@@ -3478,7 +3478,19 @@ MonoBehaviour:
     m_ActionId: 3825be80-93fb-4c04-a184-c0df919b8f9b
     m_ActionName: Player/Look[/DualShock4GamepadHID/rightStick,/Mouse/delta]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5999009529881620288}
+        m_TargetAssemblyTypeName: Player_TSS_Keyboard.Player_TSS_Keyboard, Assembly-CSharp
+        m_MethodName: OnFire
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 241b7944-9d94-4351-bcc3-3826f0c14aad
     m_ActionName: Player/Fire[/DualShock4GamepadHID/rightTrigger,/Mouse/leftButton]
   - m_PersistentCalls:
@@ -3538,6 +3550,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef8ae61e4a74d9549a709912cc1fbf49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 807032929094829589, guid: 55bc3e4297bfd4f45a0cbe24dd08f880,
+    type: 3}
+  weaponPosition: {fileID: 5767903619056079901}
 --- !u!1 &5317317914740008200
 GameObject:
   m_ObjectHideFlags: 0

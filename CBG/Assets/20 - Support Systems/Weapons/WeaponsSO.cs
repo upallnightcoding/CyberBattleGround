@@ -10,4 +10,8 @@ public class WeaponsSO : ScriptableObject
     public int numberRounds;
 
     public float coolDownPeriodSec;
+
+    [Header("Weapon Prefabs")]
+    private int trailPreFab;
+    public GameObject muzzleFlashPrefab;
 }

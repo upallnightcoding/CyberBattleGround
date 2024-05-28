@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: BasicPistol
   m_EditorClassIdentifier: 
   weaponName: Basic Pistol
-  numberRounds: 8
+  numberRounds: 12
   coolDownPeriodSec: 3
+  muzzleFlashPrefab: {fileID: 2231147687271343297, guid: e0e8e1fbf00afd242886da1248eacc69,
+    type: 3}

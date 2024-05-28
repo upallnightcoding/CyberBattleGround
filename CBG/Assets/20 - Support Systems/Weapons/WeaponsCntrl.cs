@@ -38,6 +38,11 @@ public class WeaponsCntrl : MonoBehaviour
         bullet.GetComponent<Rigidbody>().AddForce(transform.forward * 30.0f, ForceMode.Impulse);
         Destroy(bullet, 3.0f);
 
+        if (weapons.muzzleFlashPrefab)
+        {
+            GameObject flash = Instantiate(weapons.muzzleFlashPrefab, bullet.transform);
+        }
+
         if (--numberRounds <= 0)
         {
             inCoolDown = true;
