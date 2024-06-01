@@ -40,10 +40,10 @@ namespace Player_TSS_Keyboard
         void Update()
         {
             AimWeapon(rightControl);
+            MovePlayer(leftControl);
+
             lineRenderer.SetPosition(0, transform.position);
             lineRenderer.SetPosition(1, aimingPosition);
-
-            MovePlayer(leftControl);
         }
 
         /**
@@ -83,9 +83,6 @@ namespace Player_TSS_Keyboard
             lookDir.y = 0.0f;
 
             transform.LookAt(transform.position + lookDir, Vector3.up);
-
-            //lineRenderer.SetPosition(0, transform.position);
-            //lineRenderer.SetPosition(1, aimingPosition);
         }
 
         private void FireWeapon()
@@ -121,8 +118,6 @@ namespace Player_TSS_Keyboard
                 FireWeapon();
             }
         }
-
-
     }
 }
 

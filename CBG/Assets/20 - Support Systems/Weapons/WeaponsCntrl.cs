@@ -9,6 +9,7 @@ public class WeaponsCntrl : MonoBehaviour
     [SerializeField] private Transform muzzlePoint;
 
     private int numberRounds = 0;
+    private GameObject muzzleFlash;
 
     private bool inCoolDown = false;
 
@@ -16,6 +17,7 @@ public class WeaponsCntrl : MonoBehaviour
     void Start()
     {
         numberRounds = weapons.numberRounds;
+        muzzleFlash = weapons.muzzleFlashPrefab;
     }
 
     // Update is called once per frame
@@ -24,6 +26,9 @@ public class WeaponsCntrl : MonoBehaviour
         
     }
 
+    /**
+     * FireWeapon() - 
+     */
     public void FireWeapon()
     {
         if (!inCoolDown)
@@ -32,15 +37,18 @@ public class WeaponsCntrl : MonoBehaviour
         }
     }
 
+    /**
+     * Shoot() - 
+     */
     private void Shoot()
     {
         GameObject bullet = Instantiate(bulletPrefab, muzzlePoint.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().AddForce(transform.forward * 30.0f, ForceMode.Impulse);
         Destroy(bullet, 3.0f);
 
-        if (weapons.muzzleFlashPrefab)
+        if (muzzleFlash)
         {
-            GameObject flash = Instantiate(weapons.muzzleFlashPrefab, bullet.transform);
+            GameObject flash = Instantiate(muzzleFlash, bullet.transform);
         }
 
         if (--numberRounds <= 0)
@@ -52,6 +60,9 @@ public class WeaponsCntrl : MonoBehaviour
         EventCntrl.Instance.InvokeOnUpdateNumberRounds(numberRounds);
     }
 
+    /**
+     * ResetCoolDown() - 
+     */
     private void ResetCoolDown()
     {
         numberRounds = weapons.numberRounds;
