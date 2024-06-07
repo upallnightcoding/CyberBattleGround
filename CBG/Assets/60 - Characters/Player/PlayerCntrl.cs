@@ -60,7 +60,7 @@ public class PlayerCntrl : MonoBehaviour, InputCntrlDrag
      */
     public void FireWeapon()
     {
-        weaponsCntrl.FireWeapon();
+        //weaponsCntrl.FireWeapon();
     }
 
     /**

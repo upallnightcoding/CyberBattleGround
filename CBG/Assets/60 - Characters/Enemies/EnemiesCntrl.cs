@@ -10,7 +10,7 @@ public class EnemiesCntrl : MonoBehaviour
     private float rotationSpeed = 20.0f;
     private float speed = 0.5f;
 
-    private int health = 0;
+    private FiniteStateMachine fsm = null;
 
     private Animator animator;
 
@@ -19,36 +19,31 @@ public class EnemiesCntrl : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
-        animator.SetFloat("speed", speed);
+        fsm = new FiniteStateMachine();
+        fsm.Add(new RobotStateIdle(this));
+
+        animator.SetFloat("speed", 0.0f);
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Move(player.position);
+
+        fsm.OnUpdate(Time.deltaTime);
+    }
+
+    public void Move(Vector3 position)
+    {
         float step = speed * rotationSpeed;
-        Vector3 direction = player.position - transform.position;
+        Vector3 direction = position - transform.position;
 
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, step, 0.0f);
         transform.rotation = Quaternion.LookRotation(newDirection);
     }
 
-    private void TakeDamage(int damage)
+    public void SetSpeed(float speed)
     {
-        health -= damage;
-
-        if (health <= 0)
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("OnCollisionEnter ...");
-
-        if (collision.gameObject.TryGetComponent(out BulletCntrl bulletCntrl))
-        {
-            TakeDamage(bulletCntrl.GetDamage());
-        }
+        animator.SetFloat("speed", speed);
     }
 }

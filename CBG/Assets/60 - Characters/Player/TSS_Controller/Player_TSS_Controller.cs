@@ -76,7 +76,7 @@ namespace TTS_Controller
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
-        private void Fire() => weaponCntrl.FireWeapon();
+        private void Fire() => weaponCntrl.FireWeapon(true, Vector3.zero);
 
         private bool IsAming(float aimAmt) => (aimAmt > 0.3f) || aimLock;
 

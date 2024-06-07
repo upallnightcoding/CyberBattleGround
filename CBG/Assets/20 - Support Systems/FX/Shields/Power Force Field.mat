@@ -43,7 +43,7 @@ Material:
     - _QueueOffset: 0
     - _Rim_Power: 3
     m_Colors:
-    - _Main_Color: {r: 0.72156864, g: 0, b: 0, a: 0.21176471}
+    - _Main_Color: {r: 0.50678456, g: 0.72156864, b: 0, a: 0.21176471}
     - _Rim_Color: {r: 0.02313991, g: 0.9811321, b: 0.8506659, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &6407379221312466044

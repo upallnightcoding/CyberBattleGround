@@ -85,10 +85,12 @@ namespace Player_TSS_Keyboard
             transform.LookAt(transform.position + lookDir, Vector3.up);
         }
 
-        private void FireWeapon()
+        private void FireWeapon(bool trigger)
         {
-            weaponCntrl.FireWeapon();
+            weaponCntrl.FireWeapon(trigger, rightControl);
         }
+
+        // Input Events
 
         public void OnMove(InputAction.CallbackContext context)
         {
@@ -115,7 +117,12 @@ namespace Player_TSS_Keyboard
         {
             if (context.performed)
             {
-                FireWeapon();
+                FireWeapon(true);
+            }
+
+            if (context.canceled)
+            {
+                FireWeapon(false);
             }
         }
     }

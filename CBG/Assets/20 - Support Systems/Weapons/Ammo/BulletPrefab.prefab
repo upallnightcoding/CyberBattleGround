@@ -143,3 +143,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletTrail: {fileID: 20016727242071778, guid: 77fd8e72f91212343babbe92c84382aa,
     type: 3}
+  bulletSparks: {fileID: 2396098943808066518, guid: e5a141c656358234494d7cbf0e071921,
+    type: 3}

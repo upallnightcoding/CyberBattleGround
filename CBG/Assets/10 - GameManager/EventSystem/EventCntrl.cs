@@ -8,8 +8,10 @@ public class EventCntrl
     // UI - Update Number of Rounds
     //-----------------------------
     public event Action<int> OnUpdateNumberRounds = delegate { };
-    public void InvokeOnUpdateNumberRounds(int numberRounds) => 
-        OnUpdateNumberRounds.Invoke(numberRounds);
+    public event Action<float> OnUpdateCoolDown = delegate { };
+
+    public void InvokeOnUpdateNumberRounds(int numberRounds) => OnUpdateNumberRounds.Invoke(numberRounds);
+    public void InvokeOnCoolDownUpdate(float value) => OnUpdateCoolDown.Invoke(value);
 
     /**
      * Instance() -

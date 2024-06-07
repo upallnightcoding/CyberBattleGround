@@ -11,7 +11,11 @@ public class WeaponsSO : ScriptableObject
 
     public float coolDownPeriodSec;
 
+    public float timeBetweenShots;
+
+    public bool automatic;
+
     [Header("Weapon Prefabs")]
-    private int trailPreFab;
+    public GameObject trailPreFab;
     public GameObject muzzleFlashPrefab;
 }
